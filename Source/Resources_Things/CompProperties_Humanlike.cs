@@ -384,27 +384,42 @@ namespace WVC_XenotypesAndGenes
 			shouldResurrect = false;
 		}
 
-		private static bool collapse = true;
 		public override IEnumerable<Gizmo> CompGetGizmosExtra()
 		{
-			if (!DebugSettings.ShowDevGizmos)
+			if (ModsUtility.DevTools)
 			{
-				yield break;
-			}
-			yield return new Command_Action
-			{
-				defaultLabel = "DEV: ExpandDevTools",
-				defaultDesc = "Simple debug commands. Allows reset/set xenotype, reset hivemind, reset/debug pawn genes, etc.",
-				icon = ContentFinder<Texture2D>.Get("WVC/UI/XaG_General/DevMode_Setttings"),
-				action = delegate
+				yield return new Command_GenesSettings
 				{
-					collapse = !collapse;
-				}
-			};
-			if (collapse)
-			{
-				yield break;
+					defaultLabel = "WVC_XaG_GenesSettings".Translate(),
+					defaultDesc = "WVC_XaG_GenesSettingsDesc".Translate(),
+					icon = XaG_UiUtility.GenesSettingsGizmo.Texture,
+					shrinkable = true,
+					visible = true,
+					action = delegate
+					{
+						Find.WindowStack.Add(new Dialog_GenesSettings(Pawn));
+					}
+				};
 			}
+		}
+
+		//private static bool collapse = true;
+		public IEnumerable<Gizmo> DevGizmos()
+		{
+			//yield return new Command_Action
+			//{
+			//	defaultLabel = "DEV: ExpandDevTools",
+			//	defaultDesc = "Simple debug commands. Allows reset/set xenotype, reset hivemind, reset/debug pawn genes, etc.",
+			//	icon = ContentFinder<Texture2D>.Get("WVC/UI/XaG_General/DevMode_Setttings"),
+			//	action = delegate
+			//	{
+			//		collapse = !collapse;
+			//	}
+			//};
+			//if (collapse)
+			//{
+			//	yield break;
+			//}
 			yield return new Command_Action
 			{
 				defaultLabel = "DEV: ResetXenotype",
@@ -470,15 +485,15 @@ namespace WVC_XenotypesAndGenes
 					HediffUtility.ResetGeneHediffs(Pawn);
 				}
 			};
-			yield return new Command_Action
-			{
-				defaultLabel = "DEV: AddAllRemoteControllers",
-				icon = ContentFinder<Texture2D>.Get("WVC/UI/XaG_General/UI_Golemlink_GizmoSummonSettings"),
-				action = delegate
-				{
-					XaG_GeneUtility.Debug_ImplantAllGenes(parent as Pawn, DefDatabase<GeneDef>.AllDefsListForReading.Where((GeneDef geneDef) => geneDef.IsGeneDefOfType<IGeneRemoteControl>()).ToList());
-				}
-			};
+			//yield return new Command_Action
+			//{
+			//	defaultLabel = "DEV: AddAllRemoteControllers",
+			//	icon = ContentFinder<Texture2D>.Get("WVC/UI/XaG_General/UI_Golemlink_GizmoSummonSettings"),
+			//	action = delegate
+			//	{
+			//		XaG_GeneUtility.Debug_ImplantAllGenes(Pawn, DefDatabase<GeneDef>.AllDefsListForReading.Where((GeneDef geneDef) => geneDef.IsGeneDefOfType<IGeneRemoteControl>()).ToList());
+			//	}
+			//};
 			yield return new Command_Action
 			{
 				defaultLabel = "DEV: GetGenesMatchList",
@@ -525,34 +540,34 @@ namespace WVC_XenotypesAndGenes
 					Find.WindowStack.Add(new FloatMenu(list));
 				}
 			};
-			//yield return new Command_Action
-			//{
-			//	defaultLabel = "DEV: SetAsMutant",
-			//	icon = ContentFinder<Texture2D>.Get("WVC/UI/Genes/Gene_Duplicator_v0"),
-			//	action = delegate
-			//	{
-			//		List<FloatMenuOption> list = new();
-			//		List<MutantDef> mutants = DefDatabase<MutantDef>.AllDefsListForReading;
-			//		for (int i = 0; i < mutants.Count; i++)
-			//		{
-			//			MutantDef def = mutants[i];
-			//			list.Add(new FloatMenuOption(def.LabelCap, delegate
-			//			{
-			//				MutantUtility.SetPawnAsMutantInstantly(Pawn, def);
-			//			}, orderInPriority: 0 - i));
-			//		}
-			//		Find.WindowStack.Add(new FloatMenu(list));
-			//	}
-			//};
-			//yield return new Command_Action
-			//{
-			//	defaultLabel = "DEV: CleanupGeneSet",
-			//	icon = ContentFinder<Texture2D>.Get("WVC/Things/XaG_Items/Serums_Single/GeneSetCleanerSerum"),
-			//	action = delegate
-			//	{
-			//		ReimplanterUtility.GeneSetCleaner(Pawn);
-			//	}
-			//};
+			yield return new Command_Action
+			{
+				defaultLabel = "DEV: SetAsMutant",
+				icon = ContentFinder<Texture2D>.Get("WVC/UI/Genes/Gene_Duplicator_v0"),
+				action = delegate
+				{
+					List<FloatMenuOption> list = new();
+					List<MutantDef> mutants = DefDatabase<MutantDef>.AllDefsListForReading;
+					for (int i = 0; i < mutants.Count; i++)
+					{
+						MutantDef def = mutants[i];
+						list.Add(new FloatMenuOption(def.LabelCap, delegate
+						{
+							MutantUtility.SetPawnAsMutantInstantly(Pawn, def);
+						}, orderInPriority: 0 - i));
+					}
+					Find.WindowStack.Add(new FloatMenu(list));
+				}
+			};
+			yield return new Command_Action
+			{
+				defaultLabel = "DEV: CleanupGeneSet",
+				icon = ContentFinder<Texture2D>.Get("WVC/Things/XaG_Items/Serums_Single/GeneSetCleanerSerum"),
+				action = delegate
+				{
+					ReimplanterUtility.GeneSetCleaner(Pawn);
+				}
+			};
 		}
 
 		private string cachedXenotypesMatchList;

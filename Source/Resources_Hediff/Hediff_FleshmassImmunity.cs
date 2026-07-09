@@ -89,7 +89,7 @@ namespace WVC_XenotypesAndGenes
 			{
 				if (HediffUtility.TryAddHediff(def, pawn, null, null))
 				{
-					if (ModsUtility.DevMode)
+					if (ModsUtility.DevTools)
 					{
 						Log.Warning("Trying to remove " + def.label + " hediff, but " + pawn.Name.ToString() + " has the required gene. Hediff is added back.");
 					}

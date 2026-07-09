@@ -6,7 +6,8 @@ namespace WVC_XenotypesAndGenes
 	public static class ModsUtility
 	{
 
-		public static bool DevMode => WVC_Biotech.settings.devMode && DebugSettings.ShowDevGizmos;
+		public static bool DevTools => WVC_Biotech.settings.devMode && DebugSettings.ShowDevGizmos;
+		public static bool DevMode => WVC_Biotech.settings.devMode;
 
 		public static bool GameStarted()
 		{

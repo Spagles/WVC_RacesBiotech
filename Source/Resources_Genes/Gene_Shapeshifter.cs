@@ -103,39 +103,39 @@ namespace WVC_XenotypesAndGenes
 			}
 		}
 
-		[Obsolete]
-		[Unsaved(false)]
-		private bool? cachedGenesRegrow;
-		[Obsolete]
-		public bool EnableGenesRegrowing
-		{
-			get
-			{
-				if (!cachedGenesRegrow.HasValue)
-				{
-					UpdGenesRegrow();
-				}
-				return cachedGenesRegrow.Value;
-			}
-		}
+		//[Obsolete]
+		//[Unsaved(false)]
+		//private bool? cachedGenesRegrow;
+		//[Obsolete]
+		//public bool EnableGenesRegrowing
+		//{
+		//	get
+		//	{
+		//		if (!cachedGenesRegrow.HasValue)
+		//		{
+		//			UpdGenesRegrow();
+		//		}
+		//		return cachedGenesRegrow.Value;
+		//	}
+		//}
 
-		[Obsolete]
-		private void UpdGenesRegrow()
-		{
-			cachedGenesRegrow = null;
-			foreach (Gene item in pawn.genes.GenesListForReading)
-			{
-				if (item is Gene_ShapeshifterDependant dependant && dependant.DisableGenesRegrowing)
-				{
-					cachedGenesRegrow = false;
-					break;
-				}
-			}
-			if (!cachedGenesRegrow.HasValue)
-			{
-				cachedGenesRegrow = true;
-			}
-		}
+		//[Obsolete]
+		//private void UpdGenesRegrow()
+		//{
+		//	cachedGenesRegrow = null;
+		//	foreach (Gene item in pawn.genes.GenesListForReading)
+		//	{
+		//		if (item is Gene_ShapeshifterDependant dependant && dependant.DisableGenesRegrowing)
+		//		{
+		//			cachedGenesRegrow = false;
+		//			break;
+		//		}
+		//	}
+		//	if (!cachedGenesRegrow.HasValue)
+		//	{
+		//		cachedGenesRegrow = true;
+		//	}
+		//}
 
 		public override void PostAdd()
 		{
@@ -257,10 +257,10 @@ namespace WVC_XenotypesAndGenes
 
 		public virtual bool TryOffsetResource(float count)
 		{
-			if (!EnableGenesRegrowing && count > 0f)
-			{
-				return false;
-			}
+			//if (!EnableGenesRegrowing && count > 0f)
+			//{
+			//	return false;
+			//}
 			geneticMaterial += count;
 			if (geneticMaterial < 0f)
 			{
@@ -302,29 +302,29 @@ namespace WVC_XenotypesAndGenes
 		}
 
 		// Reimplanter
-		[Unsaved(false)]
-		private List<GeneDef> cachedPreservedGenes;
-		public virtual List<GeneDef> PreservedGeneDefs
-		{
-			get
-			{
-				if (cachedPreservedGenes == null)
-				{
-					List<GeneDef> newList = new();
-					foreach (Gene item in pawn.genes.GenesListForReading)
-					{
-						// Legacy
-						if (item is Gene_ShapeshifterDependant dependant && dependant.PreservedGeneDefs != null && dependant.Active)
-						{
-							newList.AddRangeSafe(dependant.PreservedGeneDefs);
-						}
-						// Legacy
-					}
-					cachedPreservedGenes = newList;
-				}
-				return cachedPreservedGenes;
-			}
-		}
+		//[Unsaved(false)]
+		//private List<GeneDef> cachedPreservedGenes;
+		//public virtual List<GeneDef> PreservedGeneDefs
+		//{
+		//	get
+		//	{
+		//		if (cachedPreservedGenes == null)
+		//		{
+		//			List<GeneDef> newList = new();
+		//			foreach (Gene item in pawn.genes.GenesListForReading)
+		//			{
+		//				// Legacy
+		//				if (item is Gene_ShapeshifterDependant dependant && dependant.PreservedGeneDefs != null && dependant.Active)
+		//				{
+		//					newList.AddRangeSafe(dependant.PreservedGeneDefs);
+		//				}
+		//				// Legacy
+		//			}
+		//			cachedPreservedGenes = newList;
+		//		}
+		//		return cachedPreservedGenes;
+		//	}
+		//}
 
 		public Pawn Pawn => pawn;
 		public Gene Gene => this;
@@ -376,7 +376,7 @@ namespace WVC_XenotypesAndGenes
 
 		public virtual void RemoveGene_Safe(Gene gene)
 		{
-			if (gene != this && !PreservedGeneDefs.Contains(gene.def))
+			if (gene != this)
 			{
 				pawn.genes.RemoveGene(gene);
 			}
@@ -400,14 +400,14 @@ namespace WVC_XenotypesAndGenes
 			{
 				ReimplanterUtility.SetXenotype(pawn, xenotypeHolder, this, removeXenogenes);
 			}
-			if (EnableGenesRegrowing)
+			//if (EnableGenesRegrowing)
+			//{
+			//}
+			if (!xenotypeHolder.isTrueShiftForm)
 			{
-				if (!xenotypeHolder.isTrueShiftForm)
-				{
-					TryOffsetResource((int)((xenotypeHolder.genes.Sum((gene) => gene.biostatCpx) * 0.05f) + (xenotypeHolder.genes.Sum((gene) => gene.biostatArc) * 0.1f)));
-				}
-				AddXenogermReplicating(xenotypeHolder.genes, (hybridizeXenotypes ? 2f : 1f) * WVC_Biotech.settings.shapeshifer_CooldownDurationFactor);
+				TryOffsetResource((int)((xenotypeHolder.genes.Sum((gene) => gene.biostatCpx) * 0.05f) + (xenotypeHolder.genes.Sum((gene) => gene.biostatArc) * 0.1f)));
 			}
+			AddXenogermReplicating(xenotypeHolder.genes, (hybridizeXenotypes ? 2f : 1f) * WVC_Biotech.settings.shapeshifer_CooldownDurationFactor);
 			if (ModLister.IdeologyInstalled)
 			{
 				Find.HistoryEventsManager.RecordEvent(new HistoryEvent(HistoryEventDefOf.WVC_Shapeshift, pawn.Named(HistoryEventArgsNames.Doer)));
@@ -482,8 +482,8 @@ namespace WVC_XenotypesAndGenes
 
 		public virtual void UpdateCache()
 		{
-			cachedGenesRegrow = null;
-			cachedPreservedGenes = null;
+			//cachedGenesRegrow = null;
+			//cachedPreservedGenes = null;
 		}
 
 		public bool gizmoCollapse = WVC_Biotech.settings.geneGizmosDefaultCollapse;

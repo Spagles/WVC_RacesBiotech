@@ -78,7 +78,7 @@ namespace WVC_XenotypesAndGenes
 			{
 				if (Gene_FleshmassReproduction.TryAddLoveEnchancer(pawn))
 				{
-					if (ModsUtility.DevMode)
+					if (ModsUtility.DevTools)
 					{
 						Log.Warning("Trying to remove " + def.label + " hediff, but " + pawn.Name.ToString() + " has the required gene. Hediff is added back.");
 					}

@@ -569,6 +569,21 @@ namespace WVC_XenotypesAndGenes
 		//	}
 		//}
 
+		public static void DevMode()
+		{
+			try
+			{
+				foreach (HediffDef hediffDef in HediffUtility.MutationDefs)
+				{
+					hediffDef.keepOnBodyPartRestoration = true;
+				}
+			}
+			catch
+			{
+				Log.Error("Failed patch mutations.");
+			}
+		}
+
 		// public static void SubXenotypes()
 		// {
 		// foreach (SubXenotypeDef subXenotypeDef in DefDatabase<SubXenotypeDef>.AllDefsListForReading)

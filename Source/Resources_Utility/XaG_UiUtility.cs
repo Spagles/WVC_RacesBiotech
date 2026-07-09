@@ -91,6 +91,10 @@ namespace WVC_XenotypesAndGenes
 
 		public static void SetAllRemoteControllersTo(Pawn pawn, bool setTo = true)
 		{
+			//if (ModsUtility.DevTools)
+			//{
+			//	setTo = false;
+			//}
 			foreach (Gene gene in pawn.genes.GenesListForReading)
 			{
 				if (gene is IGeneRemoteControl geneRemoteControl)

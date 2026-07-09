@@ -198,7 +198,7 @@ namespace WVC_XenotypesAndGenes
 				if (xenotypeDef != null && xenotypeDef != XenotypeDefOf.Baseliner)
 				{
 					SetXenotypeDirect(null, pawn, xenotypeDef);
-					if (ModsUtility.DevMode)
+					if (ModsUtility.DevTools)
 					{
 						Log.Warning($"Fixed xenotype flag for pawn: {pawn.Name?.ToStringSafe()}");
 					}
@@ -453,7 +453,7 @@ namespace WVC_XenotypesAndGenes
 				pawn.HumanComponent()?.Notify_Debugger();
 				phase = "reset ideology cache";
 				GeneshiftUtility.ResetXenotypesCollection();
-				if (ModsUtility.DevMode)
+				if (ModsUtility.DevTools)
 				{
 					Log.Warning($"Genes debugger called for pawn: {pawn.Name}. If you see this message, then everything is working normally. FUUUUCK");
 				}

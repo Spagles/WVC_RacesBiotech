@@ -31,6 +31,10 @@ namespace WVC_XenotypesAndGenes
 			{
 				Log.Error("Initial error on phase: " + phase + ". Reason: " + arg);
 			}
+			if (ModsUtility.DevMode)
+			{
+				InitialUtility.DevMode();
+			}
 		}
 
 	}
