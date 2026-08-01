@@ -485,6 +485,7 @@ namespace WVC_XenotypesAndGenes
 					HediffUtility.ResetGeneHediffs(Pawn);
 				}
 			};
+			// Causes crashes. But why now?
 			//yield return new Command_Action
 			//{
 			//	defaultLabel = "DEV: AddAllRemoteControllers",
